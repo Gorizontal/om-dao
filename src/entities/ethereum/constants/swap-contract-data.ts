@@ -1,12 +1,19 @@
-import { isProd } from "../../../shared/config";
+import {mainnet, goerli, polygon, polygonMumbai, bsc, bscTestnet} from "wagmi/chains"
+
+export const SWAP_CONTRACT_ADDRESS = {
+    [mainnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    [goerli.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+}
 
 
 
 
-export const SWAP_CONTRACT_DATA = {
-    address: isProd()
-        ? "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885"
-        : "0xCa5AD60a224f536A5174911722e2FEC17C0eF1d9",
+export const getSwapContractData = (address: string)=>  ({
+    address,
     abi: [
         {
             inputs: [
@@ -522,4 +529,4 @@ export const SWAP_CONTRACT_DATA = {
             type: "function",
         },
     ],
-};
+})

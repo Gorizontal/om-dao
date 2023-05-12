@@ -7,10 +7,11 @@ export class TokenAddButtonStore {
 
   constructor(
     private _tokenSymbol: TOKEN_SYMBOLS,
-    private readonly _ethereum: Ethereum
+    private readonly _ethereum: Ethereum,
+    networkID: number
   ) {
     makeAutoObservable(this);
-    this._baseTokenInfo = new TokenStore(this._tokenSymbol);
+    this._baseTokenInfo = new TokenStore(this._tokenSymbol, networkID);
   }
 
   public addToken = () => {

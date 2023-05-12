@@ -1,20 +1,20 @@
 import { makeAutoObservable } from "mobx";
 import { watchSigner, FetchSignerResult} from "@wagmi/core";
-import { AVAILABLE_NETWORK } from "../../../shared/config";
 import { JsonRpcSigner } from "@ethersproject/providers";
+import { Chain } from "wagmi";
 
 export class SignerStore {
   private _signer: FetchSignerResult<JsonRpcSigner> = null;
 
   private _isInitialized = false;
-  constructor() {
+  constructor(network: Chain) {
     makeAutoObservable(this);
-    this.init();
+    this.init(network);
   }
 
-  protected init = () => {
+  protected init = (network: Chain) => {
     try {
-      watchSigner({ chainId: AVAILABLE_NETWORK }, this.onChangeSigner);
+      watchSigner({ chainId: network.id }, this.onChangeSigner);
     } catch (e) {
       console.log(e);
     } finally {

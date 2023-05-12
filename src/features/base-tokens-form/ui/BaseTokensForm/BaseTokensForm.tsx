@@ -10,6 +10,7 @@ import { Button, Loader } from "../../../../shared/ui";
 import { Arrow } from "../../../../shared/ui";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import { Web3Button } from "@web3modal/react";
+import { useCurrentNetwork } from "../../../../app/use-current-network ";
 
 export interface BaseTokensFormProps {
   title: string;
@@ -46,9 +47,12 @@ export const BaseTokensForm: FC<BaseTokensFormProps> = observer(
     maxCount,
     getupdateMaxCount
   }) => {
-    const { data: sd } = useBaseTokenInfo(sourceContractSymbol, true);
 
-    const { data: dd } = useBaseTokenInfo(destinationContractSymbol, true);
+    const currentNetwork = useCurrentNetwork()
+
+    const { data: sd } = useBaseTokenInfo(sourceContractSymbol, true, currentNetwork.id);
+
+    const { data: dd } = useBaseTokenInfo(destinationContractSymbol, true, currentNetwork.id);
 
     const { isConnected } = useAccount();
 
@@ -248,19 +252,20 @@ export const BaseTokensForm: FC<BaseTokensFormProps> = observer(
 
 const useBaseTokenInfo = (
   tokenSymbol: TOKEN_SYMBOLS,
-  watch: boolean = false
+  watch: boolean = false,
+  networkID: number,
 ): { data: BaseContractInfo | undefined; isLoading: boolean } => {
   const [result, setResult] = useState<BaseContractInfo>();
   const { address } = useAccount();
 
   const { data: balance, isLoading: isLoadingBalance } = useBalance({
     address,
-    token: TOKEN_ADDRESS[tokenSymbol],
+    token: TOKEN_ADDRESS[tokenSymbol][networkID],
     watch,
   });
 
   const { data: name, isLoading: isLoadingName } = useContractRead({
-    address: TOKEN_ADDRESS[tokenSymbol],
+    address: TOKEN_ADDRESS[tokenSymbol][networkID],
     abi: TOKEN_ABI[tokenSymbol],
     functionName: "name",
   });

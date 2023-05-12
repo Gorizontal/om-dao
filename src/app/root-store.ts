@@ -11,7 +11,7 @@ import {
 } from "@web3modal/ethereum";
 import { isProd, WALLET_CONNECT_PROJECT_ID } from "../shared/config";
 
-const AVAILABLE_CHAINS = [isProd() ? mainnet : goerli];
+
 
 export class RootStore {
     private _signerStore: SignerStore | undefined;
@@ -28,7 +28,6 @@ export class RootStore {
     }
 
     protected init = () => {
-        console.log('init')
         this._isAppInitialized = false;
         try {
             this.createClients();
@@ -43,8 +42,7 @@ export class RootStore {
 
     protected initStores = () => {
         const { provider } = this.wagmiClient;
-
-        this._signerStore = new SignerStore();
+        this._signerStore = new SignerStore(this._currentNetwork);
         this._providerStore = new ProviderStore(provider, this._currentNetwork);
     };
 
@@ -70,6 +68,8 @@ export class RootStore {
         this._ethereumClient = ethereumClient;
     };
 
+ 
+
     public checkRefCode = () => {
         const refCode = localStorage.getItem("refCode");
 
@@ -84,13 +84,11 @@ export class RootStore {
         } else {
             localStorage.removeItem("refCode");
         }
-
         this._refCode = newRefCode;
     };
 
 
     public changeNetwork = (network: Chain): void => {
-        console.log(network.name)
         this._currentNetwork = network;
         this.init()
     }
@@ -145,6 +143,10 @@ export class RootStore {
 
     public get isAppInitialized(): boolean {
         return this._isAppInitialized && this.providerStore.hasProvider;
+    }
+
+    public get currentNetwork(): Chain {
+        return this._currentNetwork
     }
 
 }

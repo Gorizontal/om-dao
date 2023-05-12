@@ -4,7 +4,7 @@ import {
     OMDAO_STAKE_ABI,
     WRAPPED_TOKEN_ABI,
 } from "./contracts-abi";
-import { isProd } from "../../../shared/config";
+import {mainnet, goerli, polygon, polygonMumbai, bsc, bscTestnet} from "wagmi/chains"
 import { Address } from "wagmi";
 
 export enum TOKEN_SYMBOLS {
@@ -20,38 +20,92 @@ export enum TOKEN_SYMBOLS {
     DELC = "omdwDelC",
 }
 
-export const TOKEN_ADDRESS: Record<TOKEN_SYMBOLS, Address> = {
-    [TOKEN_SYMBOLS.USDT]: isProd()
-        ? "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-        : "0x8B31e3910f59A0975253D3f2f6C6e7D8F7caC144",
-    [TOKEN_SYMBOLS.OMD]: isProd()
-        ? "0xA4282798c2199a1C58843088297265acD748168c"
-        : "0x2d3F3Bf3997b5601D7f4f3E932912886C4c15F29",
-    [TOKEN_SYMBOLS.STOMD]: isProd()
-        ? "0x497bdbA917430E72d09993a55cdBBD411763168B"
-        : "0xD9e8F04c685b2C12027f08b71e8f3fEF6a9A6668",
-    [TOKEN_SYMBOLS.TIGR]: isProd()
-        ? "0xe1C9624Cee6da05c80572280Bc3e3bEaEd4cd3Ef"
-        : "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
-    [TOKEN_SYMBOLS.CR]: isProd()
-        ? "0x178825587FC1A7D5D6373221182290a7A4566a0A"
-        : "0x79D31450D34cad1b2ac0bB91bA6b8B7BEaDa609f",
-    [TOKEN_SYMBOLS.CONS]: isProd()
-        ? "0x967525A2030d6Ac7a0cBf0cb630107D8720A52Ef"
-        : "0xB80470b73f685d45d5a2F8998f06085Ede2154fe",
-    [TOKEN_SYMBOLS.CONT]: isProd()
-        ? "0xf6d8220D1470d12F007B3540b111Eb4e7db2Adbe"
-        : "0xbc0D848dAA133fa5d767b1fDa7fF774DB2Ff559e",
-    [TOKEN_SYMBOLS.CHAI]: isProd()
-        ? "0x1Aeb27D2F0c1861A538b289c602fFA784d3EDCB0"
-        : "0x21a56167802F2387E25a45908Ca170dF5a786AE0",
-    [TOKEN_SYMBOLS.LED]: isProd()
-        ? "0x1D8efA821D2EDEFb7c71d79F317cDe14dEE4F748"
-        : "0x62D124483252C906E8CCF02Efd893c305A25Dd42",
-    [TOKEN_SYMBOLS.DELC]: isProd()
-        ? "0x6E98eF583C64482a6A6b63a679197813B7c3Cd1A"
-        : "0x4a8bbBaE7fac603A82707D6FE2315030a7E71a63",
-};
+
+export const TOKEN_ADDRESS:Record<TOKEN_SYMBOLS, Record<number,Address>> = {
+    [TOKEN_SYMBOLS.USDT]:
+    {
+        [mainnet.id]: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0x8B31e3910f59A0975253D3f2f6C6e7D8F7caC144",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.OMD]:  {
+        [mainnet.id]: "0xA4282798c2199a1C58843088297265acD748168c",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0x2d3F3Bf3997b5601D7f4f3E932912886C4c15F29",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.STOMD]: {
+        [mainnet.id]: "0x497bdbA917430E72d09993a55cdBBD411763168B",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0xD9e8F04c685b2C12027f08b71e8f3fEF6a9A6668",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.TIGR]: {
+        [mainnet.id]: "0xe1C9624Cee6da05c80572280Bc3e3bEaEd4cd3Ef",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.CR]: {
+        [mainnet.id]: "0x178825587FC1A7D5D6373221182290a7A4566a0A",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0x79D31450D34cad1b2ac0bB91bA6b8B7BEaDa609f",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.CONS]: {
+        [mainnet.id]: "0x967525A2030d6Ac7a0cBf0cb630107D8720A52Ef",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0xB80470b73f685d45d5a2F8998f06085Ede2154fe",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.CONT]: {
+        [mainnet.id]: "0xf6d8220D1470d12F007B3540b111Eb4e7db2Adbe",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0xbc0D848dAA133fa5d767b1fDa7fF774DB2Ff559e",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.CHAI]: {
+        [mainnet.id]: "0x1Aeb27D2F0c1861A538b289c602fFA784d3EDCB0",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0x21a56167802F2387E25a45908Ca170dF5a786AE0",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.LED]: {
+        [mainnet.id]: "0x1D8efA821D2EDEFb7c71d79F317cDe14dEE4F748",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0x62D124483252C906E8CCF02Efd893c305A25Dd42",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+    [TOKEN_SYMBOLS.DELC]: {
+        [mainnet.id]: "0x6E98eF583C64482a6A6b63a679197813B7c3Cd1A",
+        [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [goerli.id]: "0x4a8bbBaE7fac603A82707D6FE2315030a7E71a63",
+        [polygonMumbai.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+        [bscTestnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
+    },
+}
+
+
 
 export const TOKEN_ABI: { [key in TOKEN_SYMBOLS]: any } = {
     [TOKEN_SYMBOLS.USDT]: USDT_ABI,

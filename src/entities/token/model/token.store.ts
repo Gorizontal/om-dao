@@ -15,12 +15,13 @@ export class TokenStore {
 
   private _name: string = "";
 
-  constructor(private _symbol: TOKEN_SYMBOLS) {
+  constructor(private _symbol: TOKEN_SYMBOLS, networkID: number) {
+
     makeAutoObservable(this);
 
     this.name = TOKEN_NAME[_symbol];
     this.decimals = TOKEN_DECIMAL[_symbol];
-    this.address = TOKEN_ADDRESS[_symbol];
+    this.address = TOKEN_ADDRESS[_symbol][networkID];
   }
 
   public get address(): Address {

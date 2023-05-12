@@ -7,7 +7,7 @@ import { formatBytes32String } from "@ethersproject/strings";
 
 import { SwapStatus } from "../../swap-tokens";
 import { RootStore } from "../../../app/root-store";
-import { SWAP_CONTRACT_DATA } from "../../../entities/ethereum/constants/swap-contract-data";
+import { SWAP_CONTRACT_ADDRESS, getSwapContractData } from "../../../entities/ethereum/constants/swap-contract-data";
 
 export class CRFormLaunchStore {
   private _exchangeRate: number = 0;
@@ -106,7 +106,7 @@ export class CRFormLaunchStore {
 
   public get sourceContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS.OMD,
+      TOKEN_ADDRESS.OMD[this._rootStore.currentNetwork.id],
       TOKEN_ABI.OMD,
       this._rootStore.signerOrProvider
     );
@@ -114,16 +114,17 @@ export class CRFormLaunchStore {
 
   public get destinationContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS.omdwCRB,
+      TOKEN_ADDRESS.omdwCRB[this._rootStore.currentNetwork.id],
       TOKEN_ABI.omdwCRB,
       this._rootStore.signerOrProvider
     );
   }
 
   public get swapContract(): Contract {
+    const contractData = getSwapContractData(SWAP_CONTRACT_ADDRESS[this._rootStore.currentNetwork.id])
     return new Contract(
-      SWAP_CONTRACT_DATA.address,
-      SWAP_CONTRACT_DATA.abi,
+      contractData.address,
+      contractData.abi,
       this._rootStore.signerOrProvider
     );
   }

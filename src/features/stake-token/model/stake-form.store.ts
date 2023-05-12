@@ -73,7 +73,7 @@ export class StakeFormStore {
 
   public get sourceContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS[TOKEN_SYMBOLS.OMD],
+      TOKEN_ADDRESS[TOKEN_SYMBOLS.OMD][this._rootStore.currentNetwork.id],
       TOKEN_ABI[TOKEN_SYMBOLS.OMD],
       this._rootStore.signerOrProvider
     );
@@ -81,7 +81,7 @@ export class StakeFormStore {
 
   public get destinationContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS[TOKEN_SYMBOLS.STOMD],
+      TOKEN_ADDRESS[TOKEN_SYMBOLS.STOMD][this._rootStore.currentNetwork.id],
       TOKEN_ABI[TOKEN_SYMBOLS.STOMD],
       this._rootStore.signerOrProvider
     );

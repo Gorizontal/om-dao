@@ -109,7 +109,7 @@ export class UnstakeFormStore {
 
   private get _stakeContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS[this._stakeTokenSymbol],
+      TOKEN_ADDRESS[this._stakeTokenSymbol][this._rootStore.currentNetwork.id],
       TOKEN_ABI[this._stakeTokenSymbol],
       this._rootStore.signerOrProvider
     );
@@ -117,7 +117,7 @@ export class UnstakeFormStore {
 
   private get _unStakeContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS[this._unstakeTokenSymbol],
+      TOKEN_ADDRESS[this._unstakeTokenSymbol][this._rootStore.currentNetwork.id],
       TOKEN_ABI[this._unstakeTokenSymbol],
       this._rootStore.signerOrProvider
     );

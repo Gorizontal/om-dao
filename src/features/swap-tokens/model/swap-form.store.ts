@@ -130,7 +130,7 @@ export class SwapFormStore {
 
   public get _sourceContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS[this._tokenASymbol],
+      TOKEN_ADDRESS[this._tokenASymbol][this._rootStore.currentNetwork.id],
       TOKEN_ABI[this._tokenASymbol],
       this._rootStore.signerOrProvider
     );
@@ -138,7 +138,7 @@ export class SwapFormStore {
 
   public get _destinationContract(): Contract {
     return new Contract(
-      TOKEN_ADDRESS[this._tokenBSymbol],
+      TOKEN_ADDRESS[this._tokenBSymbol][this._rootStore.currentNetwork.id],
       TOKEN_ABI[this._tokenBSymbol],
       this._rootStore.signerOrProvider
     );

@@ -2,12 +2,13 @@ import { makeAutoObservable } from "mobx";
 import { Contract } from "@ethersproject/contracts";
 import { TOKEN_ABI, TOKEN_ADDRESS, TOKEN_SYMBOLS } from "../../../entities";
 import { BaseTokensFormSubmitData } from "../../base-tokens-form";
-import { DELC_SWAP_CONTRACT_DATA } from "../constants";
+
 import { formatUnits, parseUnits } from "@ethersproject/units";
 import { formatBytes32String } from "@ethersproject/strings";
 
 import { SwapStatus } from "../../swap-tokens";
 import { RootStore } from "../../../app/root-store";
+import { SWAP_CONTRACT_ADDRESS, getSwapContractData } from "../../../entities/ethereum/constants/swap-contract-data";
 
 export class DELCFormLaunchStore {
     private _exchangeRate: number = 0;
@@ -106,7 +107,7 @@ export class DELCFormLaunchStore {
 
     public get sourceContract(): Contract {
         return new Contract(
-            TOKEN_ADDRESS.OMD,
+            TOKEN_ADDRESS.OMD[this._rootStore.currentNetwork.id],
             TOKEN_ABI.OMD,
             this._rootStore.signerOrProvider
         );
@@ -114,19 +115,20 @@ export class DELCFormLaunchStore {
 
     public get destinationContract(): Contract {
         return new Contract(
-            TOKEN_ADDRESS.omdwDelC,
+            TOKEN_ADDRESS.omdwDelC[this._rootStore.currentNetwork.id],
             TOKEN_ABI.omdwDelC,
             this._rootStore.signerOrProvider
         );
     }
 
     public get swapContract(): Contract {
+        const contractData = getSwapContractData(SWAP_CONTRACT_ADDRESS[this._rootStore.currentNetwork.id])
         return new Contract(
-            DELC_SWAP_CONTRACT_DATA.address,
-            DELC_SWAP_CONTRACT_DATA.abi,
-            this._rootStore.signerOrProvider
+          contractData.address,
+          contractData.abi,
+          this._rootStore.signerOrProvider
         );
-    }
+      }
 
     public get isLoading(): boolean {
         return (
