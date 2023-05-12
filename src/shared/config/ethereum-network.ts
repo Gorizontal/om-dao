@@ -7,4 +7,4 @@ export enum EChainId {
 
 export const AVAILABLE_NETWORK = isProd()
   ? EChainId["MAINNET"]
-  : EChainId["GOERLI"];
+  : EChainId["GOERLI"] 

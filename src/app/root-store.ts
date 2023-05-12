@@ -2,7 +2,8 @@ import { makeAutoObservable } from "mobx";
 import { SignerStore } from "../entities/signer";
 import { JsonRpcSigner, Provider } from "@ethersproject/providers";
 import { ProviderStore } from "../entities/provider";
-import { Client, configureChains, createClient, goerli, mainnet } from "wagmi";
+import { Client, configureChains, createClient, goerli, mainnet, Chain } from "wagmi";
+
 import {
     EthereumClient,
     modalConnectors,
@@ -18,8 +19,8 @@ export class RootStore {
     private _wagmiClient: Client | undefined;
     private _ethereumClient: EthereumClient | undefined;
     private _isAppInitialized: boolean = false;
-
     private _refCode: string | undefined;
+    private _currentNetwork: Chain = isProd() ? mainnet : goerli;
 
     constructor() {
         makeAutoObservable(this);
@@ -27,6 +28,8 @@ export class RootStore {
     }
 
     protected init = () => {
+        console.log('init')
+        this._isAppInitialized = false;
         try {
             this.createClients();
             this.initStores();
@@ -42,11 +45,11 @@ export class RootStore {
         const { provider } = this.wagmiClient;
 
         this._signerStore = new SignerStore();
-        this._providerStore = new ProviderStore(provider);
+        this._providerStore = new ProviderStore(provider, this._currentNetwork);
     };
 
     protected createClients = () => {
-        const { provider } = configureChains(AVAILABLE_CHAINS, [
+        const { provider } = configureChains([this._currentNetwork], [
             walletConnectProvider({ projectId: WALLET_CONNECT_PROJECT_ID }),
         ]);
 
@@ -54,13 +57,13 @@ export class RootStore {
             autoConnect: true,
             connectors: modalConnectors({
                 appName: "web3Modal",
-                chains: AVAILABLE_CHAINS,
+                chains: [this._currentNetwork],
             }),
             provider,
         });
         const ethereumClient = new EthereumClient(
             wagmiClient,
-            AVAILABLE_CHAINS
+            [this._currentNetwork]
         );
 
         this._wagmiClient = wagmiClient as Client;
@@ -84,6 +87,13 @@ export class RootStore {
 
         this._refCode = newRefCode;
     };
+
+
+    public changeNetwork = (network: Chain): void => {
+        console.log(network.name)
+        this._currentNetwork = network;
+        this.init()
+    }
 
     public get refCode(): string | undefined {
         return this._refCode;
@@ -136,4 +146,5 @@ export class RootStore {
     public get isAppInitialized(): boolean {
         return this._isAppInitialized && this.providerStore.hasProvider;
     }
+
 }

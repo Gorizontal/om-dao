@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Logo, Nav } from "../../../shared/ui";
 import { Web3Button } from "@web3modal/react";
+import { NetworkButton } from '../../../features/select-network'
 
 export const Header: FC = () => {
   return (
@@ -8,7 +9,9 @@ export const Header: FC = () => {
       <div className="container mx-auto gap-4 flex flex-col xl:flex-row justify-between items-center px-4">
         <Logo />
         <Nav />
+
         <div className="flex items-center justify-self-center gap-4 lg:justify-self-start">
+          <NetworkButton/>
           <Web3Button label="Подключить кошелек" />
         </div>
       </div>
