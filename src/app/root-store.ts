@@ -2,7 +2,8 @@ import { makeAutoObservable } from "mobx";
 import { SignerStore } from "../entities/signer";
 import { JsonRpcSigner, Provider } from "@ethersproject/providers";
 import { ProviderStore } from "../entities/provider";
-import { Client, configureChains, createClient, goerli, mainnet, Chain } from "wagmi";
+import { Client, configureChains, createClient } from "wagmi";
+import {polygon, polygonMumbai, mainnet, goerli, bsc, bscTestnet, Chain} from 'wagmi/chains'
 
 import {
     EthereumClient,
@@ -47,7 +48,7 @@ export class RootStore {
     };
 
     protected createClients = () => {
-        const { provider } = configureChains([this._currentNetwork], [
+        const { provider } = configureChains([mainnet, polygon], [
             walletConnectProvider({ projectId: WALLET_CONNECT_PROJECT_ID }),
         ]);
 

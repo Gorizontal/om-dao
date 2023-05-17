@@ -5,6 +5,7 @@ import { SelectNetworkStore } from "../model";
 import { useRootStore } from '../../../app/use-root-store';
 import { Chain } from 'wagmi';
 
+import { Web3NetworkSwitch, useWeb3Modal } from '@web3modal/react'
 
 
 
@@ -28,11 +29,14 @@ export const NetworkButton: FC = observer(() => {
         updateActiveFlag(false)
     }
 
+    const { isOpen, open, close } = useWeb3Modal();
+
     return (
             <div>
                 <Button onClick={onClickActive}>
                     {activeNetwork.name}
                 </Button>
+                <Web3NetworkSwitch/>
                 { activeFlag && (
                     <div className='absolute flex flex-col'>
                         {netwokList.map((network)=>{
