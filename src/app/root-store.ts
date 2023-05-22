@@ -18,7 +18,7 @@ export class RootStore {
     private _ethereumClient: EthereumClient | undefined;
     private _isAppInitialized: boolean = false;
     private _refCode: string | undefined;
-    private _currentNetwork: Chain = isProd() ? mainnet : goerli;
+    private _currentNetwork: Chain = isProd() ? bsc : goerli;
 
     constructor() {
         makeAutoObservable(this);
@@ -46,18 +46,18 @@ export class RootStore {
 
     protected createClients = () => {
 
-        const { publicClient } = configureChains([mainnet, polygon], [
+        const { publicClient } = configureChains([mainnet, polygon, bsc], [
             w3mProvider({ projectId: WALLET_CONNECT_PROJECT_ID }),
         ]);
 
         const wagmiClient = createConfig({
             autoConnect: true,
-            connectors: w3mConnectors({ projectId: WALLET_CONNECT_PROJECT_ID , version: 1, chains: [this._currentNetwork ]}),
+            connectors: w3mConnectors({ projectId: WALLET_CONNECT_PROJECT_ID , version: 1, chains: [mainnet, polygon, bsc ]}),
             publicClient,
         });
         const ethereumClient = new EthereumClient(
             wagmiClient,
-            [this._currentNetwork]
+            [mainnet, polygon, bsc]
         );
 
         this._wagmiClient = wagmiClient as Config;
