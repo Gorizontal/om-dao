@@ -283,7 +283,7 @@ const useBaseTokenInfo = (
         .catch();
 
       setResult({
-        name: name as string,
+        name: name as  unknown as string,
         decimals: balance ? balance.decimals.toString() : "0",
         symbol: tokenSymbol,
         balance: balance ? balance.formatted : "0",

@@ -2,22 +2,19 @@ import { makeAutoObservable } from "mobx";
 import { SignerStore } from "../entities/signer";
 import { JsonRpcSigner, Provider } from "@ethersproject/providers";
 import { ProviderStore } from "../entities/provider";
-import { Client, configureChains, createClient } from "wagmi";
+import {  configureChains, createConfig, Config, PublicClient } from "wagmi";
 import {polygon, polygonMumbai, mainnet, goerli, bsc, bscTestnet, Chain} from 'wagmi/chains'
-
-import {
-    EthereumClient,
-    modalConnectors,
-    walletConnectProvider,
-} from "@web3modal/ethereum";
+import { publicProvider } from 'wagmi/providers/public'
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { isProd, WALLET_CONNECT_PROJECT_ID } from "../shared/config";
-
+import { Client } from "viem";
+import { Signer } from "ethers";
 
 
 export class RootStore {
     private _signerStore: SignerStore | undefined;
     private _providerStore: ProviderStore | undefined;
-    private _wagmiClient: Client | undefined;
+    private _wagmiClient: Config | undefined;
     private _ethereumClient: EthereumClient | undefined;
     private _isAppInitialized: boolean = false;
     private _refCode: string | undefined;
@@ -42,30 +39,28 @@ export class RootStore {
     };
 
     protected initStores = () => {
-        const { provider } = this.wagmiClient;
+        const {publicClient} = this.wagmiClient;
         this._signerStore = new SignerStore(this._currentNetwork);
-        this._providerStore = new ProviderStore(provider, this._currentNetwork);
+        this._providerStore = new ProviderStore(publicClient, this._currentNetwork);
     };
 
     protected createClients = () => {
-        const { provider } = configureChains([mainnet, polygon], [
-            walletConnectProvider({ projectId: WALLET_CONNECT_PROJECT_ID }),
+
+        const { publicClient } = configureChains([mainnet, polygon], [
+            w3mProvider({ projectId: WALLET_CONNECT_PROJECT_ID }),
         ]);
 
-        const wagmiClient = createClient({
+        const wagmiClient = createConfig({
             autoConnect: true,
-            connectors: modalConnectors({
-                appName: "web3Modal",
-                chains: [this._currentNetwork],
-            }),
-            provider,
+            connectors: w3mConnectors({ projectId: WALLET_CONNECT_PROJECT_ID , version: 1, chains: [this._currentNetwork ]}),
+            publicClient,
         });
         const ethereumClient = new EthereumClient(
             wagmiClient,
             [this._currentNetwork]
         );
 
-        this._wagmiClient = wagmiClient as Client;
+        this._wagmiClient = wagmiClient as Config;
         this._ethereumClient = ethereumClient;
     };
 
@@ -121,7 +116,7 @@ export class RootStore {
         return this._ethereumClient;
     }
 
-    public get wagmiClient(): Client {
+    public get wagmiClient(): Config {
         if (!this._wagmiClient) {
             throw Error("WagmiClient не существует");
         }
@@ -129,7 +124,7 @@ export class RootStore {
         return this._wagmiClient;
     }
 
-    public get signerOrProvider(): JsonRpcSigner | Provider | undefined {
+    public get signerOrProvider(): PublicClient | undefined  {
         if (this.signerStore.hasSigner) {
             return this.signerStore.signer;
         }

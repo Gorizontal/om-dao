@@ -50,7 +50,7 @@ export class UnstakeFormStore {
     try {
       const decimals = await this._stakeContract.decimals();
       const signerAddress =
-        await this._rootStore.signerStore.signer.getAddress();
+        await this._rootStore.signerStore.signer.getEnsAddress();
       const balance = await this._stakeContract.balanceOf(signerAddress);
       this._inStake = formatUnits(balance, decimals);
     } catch (e) {

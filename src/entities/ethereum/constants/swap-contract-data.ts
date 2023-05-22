@@ -1,6 +1,8 @@
 import {mainnet, goerli, polygon, polygonMumbai, bsc, bscTestnet} from "wagmi/chains"
 
-export const SWAP_CONTRACT_ADDRESS = {
+
+
+export const SWAP_CONTRACT_ADDRESS: Record<number, string> = {
     [mainnet.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
     [polygon.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",
     [bsc.id]: "0x9a4d39F46044400Aa48Ab528f8EC3DD3B793f885",

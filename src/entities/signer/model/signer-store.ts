@@ -1,10 +1,10 @@
 import { makeAutoObservable } from "mobx";
-import { watchSigner, FetchSignerResult} from "@wagmi/core";
+import { PublicClient, watchPublicClient } from "@wagmi/core";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { Chain } from "wagmi";
 
 export class SignerStore {
-  private _signer: FetchSignerResult<JsonRpcSigner> = null;
+  private _signer: null | PublicClient = null;
 
   private _isInitialized = false;
   constructor(network: Chain) {
@@ -14,7 +14,7 @@ export class SignerStore {
 
   protected init = (network: Chain) => {
     try {
-      watchSigner({ chainId: network.id }, this.onChangeSigner);
+      watchPublicClient({ chainId: network.id }, this.onChangeSigner);
     } catch (e) {
       console.log(e);
     } finally {
@@ -22,11 +22,11 @@ export class SignerStore {
     }
   };
 
-  private onChangeSigner = (data: FetchSignerResult<JsonRpcSigner>) => {
+  private onChangeSigner = (data: PublicClient | null) => {
     this._signer = data;
   };
 
-  get signer(): JsonRpcSigner {
+  get signer(): PublicClient {
     if (!this._signer) {
       throw Error("Signer не существует");
     }

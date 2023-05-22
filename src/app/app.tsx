@@ -20,15 +20,13 @@ export const App: FC = observer(() => {
     <RootStoreProvider rootStore={rootStore}>
       {isAppInitialized ? (
         <>
-          <WagmiConfig client={wagmiClient}>
+          <WagmiConfig config={wagmiClient}>
             <RouterProvider router={appRouter} />
           </WagmiConfig>
           <Web3Modal
             projectId={WALLET_CONNECT_PROJECT_ID}
             ethereumClient={ethereumClient}
             themeMode="dark"
-            themeColor="magenta"
-            themeBackground="themeColor"
           />
         </>
       ) : (

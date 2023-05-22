@@ -1,14 +1,13 @@
 import { makeAutoObservable } from "mobx";
-import { GetProviderResult, watchProvider } from "@wagmi/core";
-import {BaseProvider, Provider} from "@ethersproject/providers";
+import { PublicClient, watchPublicClient } from "@wagmi/core";
 import { Chain } from "wagmi";
 
 export class ProviderStore {
-  private _provider: null | GetProviderResult = null;
+  private _provider: null | PublicClient = null;
 
 
   private _isInitialized = false;
-  constructor(defaultProvider: BaseProvider, network: Chain) {
+  constructor(defaultProvider: PublicClient, network: Chain) {
     makeAutoObservable(this);
     this._provider = defaultProvider;
     this.init(network);
@@ -16,7 +15,7 @@ export class ProviderStore {
 
   protected init = (network: Chain) => {
     try {
-      watchProvider({ chainId: network.id }, this.onChangeProvider);
+      watchPublicClient({ chainId: network.id }, this.onChangeProvider);
     } catch (e) {
       console.log(e);
     } finally {
@@ -24,11 +23,11 @@ export class ProviderStore {
     }
   };
 
-  private onChangeProvider = (data: GetProviderResult) => {
+  private onChangeProvider = (data: PublicClient) => {
     this._provider = data;
   };
 
-  get provider(): Provider {
+  get provider(): PublicClient {
     if (!this._provider) {
       throw Error("Provider не существует");
     }

@@ -62,7 +62,6 @@ export const ModalBase: FC<TModalBaseProps> = ({
   width = "large",
   open,
   unmount,
-  zIndex,
   useOutsideClick,
   ...otherProps
 }) => {
